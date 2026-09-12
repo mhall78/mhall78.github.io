@@ -421,6 +421,53 @@
     outline: 2px solid var(--accent-warm);
     outline-offset: 2px;
   }
+
+  /* ---------- custom cursor ---------- */
+  @media (hover: hover) and (pointer: fine){
+    body{ cursor: none; }
+    a, .btn{ cursor: none; }
+
+    .cursor-dot{
+      position: fixed;
+      top: 0; left: 0;
+      width: 6px; height: 6px;
+      background: var(--accent-warm);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999;
+      transform: translate(-50%, -50%);
+    }
+    .cursor-ring{
+      position: fixed;
+      top: 0; left: 0;
+      width: 32px; height: 32px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 998;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+    }
+    .cursor-ring.is-active{
+      width: 52px;
+      height: 52px;
+      border-color: var(--accent-warm);
+    }
+    .cursor-glow{
+      position: fixed;
+      top: 0; left: 0;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(76,134,198,0.35) 0%, rgba(76,134,198,0) 70%);
+      pointer-events: none;
+      z-index: 997;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: screen;
+      transition: background 0.25s ease;
+    }
+    .cursor-glow.is-active{
+      background: radial-gradient(circle, rgba(232,163,61,0.4) 0%, rgba(232,163,61,0) 70%);
+    }
+  }
 </style>
 </head>
 <body>
@@ -643,6 +690,51 @@
     <div class="footer-bottom">© 2026 Michael Hall</div>
   </div>
 </footer>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<script>
+  (function(){
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    const glow = document.getElementById('cursorGlow');
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+
+    window.addEventListener('mousemove', function(e){
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.left = mouseX + 'px';
+      dot.style.top = mouseY + 'px';
+    });
+
+    function animateRing(){
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      ring.style.left = ringX + 'px';
+      ring.style.top = ringY + 'px';
+      glow.style.left = ringX + 'px';
+      glow.style.top = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, .btn').forEach(function(el){
+      el.addEventListener('mouseenter', function(){
+        ring.classList.add('is-active');
+        glow.classList.add('is-active');
+      });
+      el.addEventListener('mouseleave', function(){
+        ring.classList.remove('is-active');
+        glow.classList.remove('is-active');
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>
