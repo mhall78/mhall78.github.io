@@ -426,47 +426,56 @@
   @media (hover: hover) and (pointer: fine){
     body{ cursor: none; }
     a, .btn{ cursor: none; }
+  }
 
-    .cursor-dot{
-      position: fixed;
-      top: 0; left: 0;
-      width: 6px; height: 6px;
-      background: var(--accent-warm);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 999;
-      transform: translate(-50%, -50%);
-    }
-    .cursor-ring{
-      position: fixed;
-      top: 0; left: 0;
-      width: 32px; height: 32px;
-      border: 1px solid var(--accent);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 998;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
-    }
-    .cursor-ring.is-active{
-      width: 52px;
-      height: 52px;
-      border-color: var(--accent-warm);
-    }
-    .cursor-glow{
-      position: fixed;
-      top: 0; left: 0;
-      width: 220px; height: 220px;
-      background: radial-gradient(circle, rgba(76,134,198,0.35) 0%, rgba(76,134,198,0) 70%);
-      pointer-events: none;
-      z-index: 997;
-      transform: translate(-50%, -50%);
-      mix-blend-mode: screen;
-      transition: background 0.25s ease;
-    }
-    .cursor-glow.is-active{
-      background: radial-gradient(circle, rgba(232,163,61,0.4) 0%, rgba(232,163,61,0) 70%);
-    }
+  .cursor-dot{
+    position: fixed;
+    top: 0; left: 0;
+    width: 6px; height: 6px;
+    background: var(--accent-warm);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 999;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .cursor-ring{
+    position: fixed;
+    top: 0; left: 0;
+    width: 32px; height: 32px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 998;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, opacity 0.25s ease;
+    opacity: 0;
+  }
+  .cursor-ring.is-active{
+    width: 52px;
+    height: 52px;
+    border-color: var(--accent-warm);
+  }
+  .cursor-glow{
+    position: fixed;
+    top: 0; left: 0;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(76,134,198,0.35) 0%, rgba(76,134,198,0) 70%);
+    pointer-events: none;
+    z-index: 997;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: screen;
+    transition: background 0.25s ease, opacity 0.25s ease;
+    opacity: 0;
+  }
+  .cursor-glow.is-active{
+    background: radial-gradient(circle, rgba(232,163,61,0.4) 0%, rgba(232,163,61,0) 70%);
+  }
+  .cursor-dot.is-visible,
+  .cursor-ring.is-visible,
+  .cursor-glow.is-visible{
+    opacity: 1;
   }
 </style>
 </head>
@@ -697,24 +706,41 @@
 
 <script>
   (function(){
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-
     const dot = document.getElementById('cursorDot');
     const ring = document.getElementById('cursorRing');
     const glow = document.getElementById('cursorGlow');
-    let mouseX = 0, mouseY = 0;
+    let x = 0, y = 0;
     let ringX = 0, ringY = 0;
+    let fadeTimer = null;
 
-    window.addEventListener('mousemove', function(e){
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      dot.style.left = mouseX + 'px';
-      dot.style.top = mouseY + 'px';
-    });
+    function moveTo(clientX, clientY){
+      x = clientX;
+      y = clientY;
+      dot.style.left = x + 'px';
+      dot.style.top = y + 'px';
+      show();
+    }
+
+    function show(){
+      dot.classList.add('is-visible');
+      ring.classList.add('is-visible');
+      glow.classList.add('is-visible');
+    }
+
+    function hide(){
+      dot.classList.remove('is-visible');
+      ring.classList.remove('is-visible');
+      glow.classList.remove('is-visible');
+    }
+
+    function scheduleTouchFade(){
+      clearTimeout(fadeTimer);
+      fadeTimer = setTimeout(hide, 500);
+    }
 
     function animateRing(){
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
+      ringX += (x - ringX) * 0.18;
+      ringY += (y - ringY) * 0.18;
       ring.style.left = ringX + 'px';
       ring.style.top = ringY + 'px';
       glow.style.left = ringX + 'px';
@@ -722,6 +748,23 @@
       requestAnimationFrame(animateRing);
     }
     animateRing();
+
+    const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    if (isFinePointer){
+      window.addEventListener('mousemove', function(e){ moveTo(e.clientX, e.clientY); });
+    } else {
+      window.addEventListener('touchstart', function(e){
+        const t = e.touches[0];
+        moveTo(t.clientX, t.clientY);
+      }, { passive: true });
+      window.addEventListener('touchmove', function(e){
+        const t = e.touches[0];
+        moveTo(t.clientX, t.clientY);
+        scheduleTouchFade();
+      }, { passive: true });
+      window.addEventListener('touchend', scheduleTouchFade, { passive: true });
+    }
 
     document.querySelectorAll('a, .btn').forEach(function(el){
       el.addEventListener('mouseenter', function(){
@@ -732,6 +775,10 @@
         ring.classList.remove('is-active');
         glow.classList.remove('is-active');
       });
+      el.addEventListener('touchstart', function(){
+        ring.classList.add('is-active');
+        glow.classList.add('is-active');
+      }, { passive: true });
     });
   })();
 </script>
