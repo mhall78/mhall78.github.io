@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Michael Hall — Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0F1720;
+    --bg-alt: #16212C;
+    --ink: #EDF1F5;
+    --muted: #93A4B8;
+    --accent: #4C86C6;
+    --accent-warm: #E8A33D;
+    --line: #2A3B4D;
+    --line-bright: #3E5670;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* circuit-board background */
+  .grid-bg{
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%234C86C6' stroke-width='1'%3E%3Cpath d='M0 40 H60 V0'/%3E%3Cpath d='M100 0 V50 H160'/%3E%3Cpath d='M0 120 H40 V160'/%3E%3Cpath d='M160 100 H120 V160'/%3E%3Cpath d='M60 40 V90 H100 V120'/%3E%3Cpath d='M100 50 H130 V100'/%3E%3C/g%3E%3Cg fill='%234C86C6'%3E%3Ccircle cx='60' cy='40' r='2.5'/%3E%3Ccircle cx='100' cy='50' r='2.5'/%3E%3Ccircle cx='40' cy='120' r='2.5'/%3E%3Ccircle cx='120' cy='100' r='2.5'/%3E%3Ccircle cx='100' cy='120' r='2.5'/%3E%3Ccircle cx='130' cy='100' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 160px 160px;
+    opacity: 0.16;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .grid-bg::after{
+    content: '';
+    position: absolute;
+    top: 96px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-warm) 6%, transparent 14%);
+    background-size: 220% 100%;
+    opacity: 0.7;
+    animation: trace-pulse 5s ease-in-out infinite;
+  }
+  @keyframes trace-pulse{
+    0%{ background-position: -120% 0; }
+    100%{ background-position: 220% 0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .grid-bg::after{ animation: none; opacity: 0; }
+  }
+
+  .wrap{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  a{ color: inherit; }
+
+  /* ---------- nav ---------- */
+  nav{
+    position: sticky;
+    top: 0;
+    background: rgba(15,23,32,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    z-index: 10;
+  }
+  nav .wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    max-width: 900px;
+  }
+  .nav-name{
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .nav-links{ display: flex; gap: 28px; list-style: none; }
+  .nav-links a{
+    font-size: 14px;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.15s ease;
+  }
+  .nav-links a:hover{ color: var(--ink); }
+
+  /* ---------- hero ---------- */
+  header.hero{
+    padding: 100px 0 80px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero-tag{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+  h1.hero-title{
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 1.08;
+    max-width: 11ch;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: rise 0.7s ease forwards;
+  }
+  .hero-desc{
+    max-width: 52ch;
+    color: var(--muted);
+    font-size: 17px;
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: rise 0.7s ease 0.15s forwards;
+  }
+  .hero-desc strong{ color: var(--ink); font-weight: 500; }
+  .hero-actions{
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: rise 0.7s ease 0.3s forwards;
+  }
+  @keyframes rise{
+    from{ opacity: 0; transform: translateY(14px); }
+    to{ opacity: 1; transform: translateY(0); }
+  }
+  .btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid var(--line-bright);
+    border-radius: 3px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .btn-primary{
+    background: var(--accent-warm);
+    color: #0F1720;
+    border-color: var(--accent-warm);
+    font-weight: 600;
+  }
+  .btn-primary:hover{ background: #f0ae4d; }
+  .btn-ghost:hover{ border-color: var(--accent); }
+
+  /* ---------- section chrome ---------- */
+  section{
+    padding: 72px 0;
+    border-top: 1px solid var(--line);
+  }
+  .sec-head{
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 44px;
+  }
+  .sec-index{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+  }
+  .sec-title{
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+  /* ---------- projects ---------- */
+  .project{
+    position: relative;
+    border: 1px solid var(--line);
+    padding: 32px;
+    margin-bottom: 28px;
+    transition: border-color 0.2s ease;
+  }
+  .project:hover{ border-color: var(--line-bright); }
+  .project::before, .project::after,
+  .project .c1, .project .c2{
+    content:'';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid var(--accent);
+    opacity: 0.7;
+  }
+  .project::before{ top: -1px; left: -1px; border-right: none; border-bottom: none; }
+  .project::after{ bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+  .project-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .project-name{
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+  }
+  .project-links{
+    display: flex;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .project-links a{ text-decoration: none; color: var(--accent); }
+  .project-links a:hover{ color: var(--accent-warm); }
+  .project-desc{
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 62ch;
+    margin-bottom: 18px;
+  }
+  .stack-row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    align-items: center;
+  }
+  .stack-label{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--line-bright);
+  }
+  .stack-tag{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    padding-left: 12px;
+    position: relative;
+  }
+  .stack-tag::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 6px;
+    height: 1px;
+    background: var(--line-bright);
+  }
+  .project-note{
+    font-size: 13px;
+    color: var(--line-bright);
+    margin-top: 16px;
+    font-style: italic;
+  }
+
+  /* ---------- skills ---------- */
+  .skill-groups{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 32px;
+  }
+  .skill-group-title{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .skill-list{ list-style: none; }
+  .skill-list li{
+    font-size: 15px;
+    color: var(--ink);
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .skill-list li::before{
+    content: '';
+    width: 5px; height: 5px;
+    background: var(--line-bright);
+    border-radius: 50%;
+  }
+
+  /* ---------- timeline (experience) ---------- */
+  .timeline{
+    position: relative;
+    padding-left: 28px;
+  }
+  .timeline::before{
+    content:'';
+    position: absolute;
+    left: 4px;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: var(--line);
+  }
+  .tl-item{
+    position: relative;
+    padding-bottom: 36px;
+  }
+  .tl-item:last-child{ padding-bottom: 0; }
+  .tl-item::before{
+    content:'';
+    position: absolute;
+    left: -28px;
+    top: 6px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+  }
+  .tl-date{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .tl-role{
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .tl-org{ color: var(--muted); font-size: 14px; margin-bottom: 8px; }
+  .tl-desc{ color: var(--muted); font-size: 14px; max-width: 58ch; }
+
+  /* ---------- honors ---------- */
+  .honor{
+    display: flex;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .honor:last-child{ border-bottom: none; }
+  .honor-mark{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent-warm);
+    padding-top: 3px;
+    flex-shrink: 0;
+  }
+  .honor-title{ font-weight: 600; margin-bottom: 4px; }
+  .honor-desc{ color: var(--muted); font-size: 14px; }
+
+  /* ---------- education ---------- */
+  .edu-card{
+    border: 1px solid var(--line);
+    padding: 28px 32px;
+  }
+  .edu-school{ font-family: var(--serif); font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .edu-degree{ color: var(--ink); font-size: 15px; margin-bottom: 4px; }
+  .edu-meta{ font-family: var(--mono); font-size: 13px; color: var(--muted); }
+
+  /* ---------- contact / footer ---------- */
+  footer{
+    padding: 80px 0 60px;
+    border-top: 1px solid var(--line);
+  }
+  .footer-title{
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    max-width: 14ch;
+  }
+  .footer-desc{ color: var(--muted); max-width: 46ch; margin-bottom: 32px; }
+  .contact-row{
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+  .contact-row a{
+    font-family: var(--mono);
+    font-size: 14px;
+    text-decoration: none;
+    color: var(--accent);
+    border-bottom: 1px solid transparent;
+  }
+  .contact-row a:hover{ border-bottom-color: var(--accent); }
+  .footer-bottom{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--line-bright);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    h1.hero-title, .hero-desc, .hero-actions{ animation: none; opacity: 1; }
+  }
+
+  @media (max-width: 640px){
+    header.hero{ padding: 64px 0 56px; }
+    .project{ padding: 24px 20px; }
+    .edu-card{ padding: 22px; }
+  }
+
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--accent-warm);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="wrap">
+    <span class="nav-name">M. Hall</span>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-tag">Computer Science — Winston-Salem State University</div>
+    <h1 class="hero-title">Michael Hall</h1>
+    <p class="hero-desc">
+      Software engineer in the making — <strong>Java and Python</strong> foundations,
+      a full-stack app already shipped, and a growing focus on
+      <strong>app development and building with AI</strong>. Graduating December 2026.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#projects">View projects</a>
+      <a class="btn btn-ghost" href="https://github.com/mhall78" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</header>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-index">01</span>
+      <h2 class="sec-title">Projects</h2>
+    </div>
+
+    <div class="project">
+      <div class="project-top">
+        <span class="project-name">Cat Shelter App</span>
+        <div class="project-links">
+          <a href="https://github.com/mhall78/cat-shelter-app" target="_blank" rel="noopener">Code</a>
+        </div>
+      </div>
+      <p class="project-desc">
+        A full-stack cat adoption web application — browsing available cats,
+        managing listings, and persisting data through a relational database
+        rather than mock data.
+      </p>
+      <div class="stack-row">
+        <span class="stack-label">stack</span>
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Flask</span>
+        <span class="stack-tag">MySQL</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-top">
+        <span class="project-name">Java Gradebook System</span>
+        <div class="project-links">
+          <a href="https://github.com/mhall78/java-gradebook-system" target="_blank" rel="noopener">Code</a>
+        </div>
+      </div>
+      <p class="project-desc">
+        A gradebook system for managing student records — entering grades,
+        calculating averages, and organizing student data using
+        object-oriented design.
+      </p>
+      <div class="stack-row">
+        <span class="stack-label">stack</span>
+        <span class="stack-tag">Java</span>
+        <span class="stack-tag">OOP</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-top">
+        <span class="project-name">Number Guessing Game</span>
+        <div class="project-links">
+          <a href="https://github.com/mhall78/python-number-guessing-game" target="_blank" rel="noopener">Code</a>
+        </div>
+      </div>
+      <p class="project-desc">
+        A command-line game that generates a random number and prompts the
+        player to guess it — an early project in control flow and
+        input handling.
+      </p>
+      <div class="stack-row">
+        <span class="stack-label">stack</span>
+        <span class="stack-tag">Python</span>
+      </div>
+      <p class="project-note">Early-stage project, kept here to show progression.</p>
+    </div>
+
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-index">02</span>
+      <h2 class="sec-title">Skills</h2>
+    </div>
+    <div class="skill-groups">
+      <div>
+        <div class="skill-group-title">languages</div>
+        <ul class="skill-list">
+          <li>Java</li>
+          <li>Python</li>
+          <li>SQL</li>
+        </ul>
+      </div>
+      <div>
+        <div class="skill-group-title">tools</div>
+        <ul class="skill-list">
+          <li>Git</li>
+          <li>VS Code</li>
+          <li>EV3 Robotics</li>
+          <li>TouchDesigner</li>
+        </ul>
+      </div>
+      <div>
+        <div class="skill-group-title">concepts</div>
+        <ul class="skill-list">
+          <li>Data Structures</li>
+          <li>Algorithms</li>
+          <li>Object-Oriented Programming</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-index">03</span>
+      <h2 class="sec-title">Experience</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">August 2025 — Present</div>
+        <div class="tl-role">Help Desk Technician</div>
+        <div class="tl-org">Winston-Salem State University</div>
+        <div class="tl-desc">Resetting passwords and account access, troubleshooting computer and software issues, and resolving tech support tickets and emails for students and staff.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">June 2024 — Present</div>
+        <div class="tl-role">Cashier / Guest Service Advocate</div>
+        <div class="tl-org">Target, Rock Hill, SC</div>
+        <div class="tl-desc">Processing high-volume transactions and resolving guest concerns while supporting inventory and checkout operations.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">May 2023 — August 2023</div>
+        <div class="tl-role">PTV Splitter</div>
+        <div class="tl-org">Ross Distribution Center, Rock Hill, SC</div>
+        <div class="tl-desc">Managed package sorting operations in a fast-paced warehouse environment, operating machinery safely to support logistics efficiency.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">August 2020 — January 2023</div>
+        <div class="tl-role">Cashier / Food Prep</div>
+        <div class="tl-org">Salsarita's Fresh Mexican Grill, Rock Hill, SC</div>
+        <div class="tl-desc">Managed high-volume transactions and supported inventory tracking while maintaining food safety compliance.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="honors">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-index">04</span>
+      <h2 class="sec-title">Honors &amp; Leadership</h2>
+    </div>
+    <div class="honor">
+      <span class="honor-mark">★</span>
+      <div>
+        <div class="honor-title">ADMI 2024 Code-A-Thon Award</div>
+        <div class="honor-desc">Recognized for strong programming and analytical problem-solving skills.</div>
+      </div>
+    </div>
+    <div class="honor">
+      <span class="honor-mark">★</span>
+      <div>
+        <div class="honor-title">WSFCS Elementary Role Model Program</div>
+        <div class="honor-desc">Mentored elementary students in STEM concepts and technology fundamentals.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-index">05</span>
+      <h2 class="sec-title">Education</h2>
+    </div>
+    <div class="edu-card">
+      <div class="edu-school">Winston-Salem State University</div>
+      <div class="edu-degree">Bachelor of Science, Computer Science</div>
+      <div class="edu-meta">Expected December 2026 · Winston-Salem, NC</div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <h2 class="footer-title">Let's talk.</h2>
+    <p class="footer-desc">Open to software engineering roles and internship opportunities — especially in app development and AI-driven products. Reach out any time.</p>
+    <div class="contact-row">
+      <a href="mailto:mhall222@rams.wssu.edu">mhall222@rams.wssu.edu</a>
+      <a href="https://github.com/mhall78" target="_blank" rel="noopener">github.com/mhall78</a>
+      <a href="https://www.linkedin.com/in/michael-hall-704b50302/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="footer-bottom">© 2026 Michael Hall</div>
+  </div>
+</footer>
+
+</body>
+</html>
