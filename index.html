@@ -272,6 +272,54 @@
     margin-top: 16px;
     font-style: italic;
   }
+  .project-highlights{
+    list-style: none;
+    margin-bottom: 18px;
+  }
+  .project-highlights li{
+    color: var(--muted);
+    font-size: 14px;
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .project-highlights li::before{
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  /* ---------- looking-for tags ---------- */
+  .looking-for-desc{
+    color: var(--muted);
+    max-width: 58ch;
+    margin-bottom: 24px;
+  }
+  .looking-for-tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .looking-for-tag{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    border: 1px solid var(--line-bright);
+    border-radius: 3px;
+    padding: 8px 14px;
+  }
+
+  /* ---------- featured timeline item ---------- */
+  .tl-item.is-featured .tl-role{
+    font-size: 18px;
+    color: var(--accent-warm);
+  }
+  .tl-item.is-featured .tl-desc{
+    max-width: 60ch;
+  }
+  .tl-item.is-featured::before{
+    border-color: var(--accent-warm);
+  }
 
   /* ---------- project screenshot carousel ---------- */
   .carousel{
@@ -571,13 +619,14 @@
     <div class="hero-tag">Computer Science — Winston-Salem State University</div>
     <h1 class="hero-title">Michael Hall</h1>
     <p class="hero-desc">
-      Software engineer in the making — <strong>Java and Python</strong> foundations,
-      a full-stack app already shipped, and a growing focus on
-      <strong>app development and building with AI</strong>. Graduating December 2026.
+      Computer Science senior building practical software with
+      <strong>Java, Python, SQL,</strong> and modern development tools.
+      Winston-Salem State University · B.S. Computer Science · Expected December 2026.
     </p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="#projects">View projects</a>
       <a class="btn btn-ghost" href="https://github.com/mhall78" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/michael-hall-704b50302/" target="_blank" rel="noopener">LinkedIn ↗</a>
     </div>
   </div>
 </header>
@@ -609,10 +658,15 @@
         <div class="carousel-dots"></div>
       </div>
       <p class="project-desc">
-        A full-stack cat adoption web application — browsing available cats,
-        managing listings, and persisting data through a relational database
-        rather than mock data.
+        A full-stack web application designed to manage cat listings and
+        adoption requests. Built a Flask backend connected to a MySQL
+        database to store and retrieve real application data.
       </p>
+      <ul class="project-highlights">
+        <li>Built REST-style backend functionality with Flask</li>
+        <li>Designed relational database tables for cats and adoption requests</li>
+        <li>Implemented forms for submitting adoption requests</li>
+      </ul>
       <div class="stack-row">
         <span class="stack-label">stack</span>
         <span class="stack-tag">Python</span>
@@ -623,7 +677,7 @@
 
     <div class="project">
       <div class="project-top">
-        <span class="project-name">Orbiting Ball</span>
+        <span class="project-name">Interactive Motion Visualization</span>
         <div class="project-links">
           <a href="https://github.com/mhall78/touchdesigner-orbiting-ball" target="_blank" rel="noopener">Code</a>
           <a href="https://www.youtube.com/watch?v=wnNzaCTED8Y&t=56s" target="_blank" rel="noopener">Demo</a>
@@ -631,7 +685,7 @@
       </div>
       <div class="carousel" data-carousel>
         <div class="carousel-track">
-          <img class="carousel-slide" src="assets/screenshots/orbiting-ball-1.png" alt="Orbiting Ball screenshot" loading="lazy">
+          <img class="carousel-slide" src="assets/screenshots/orbiting-ball-1.png" alt="Interactive Motion Visualization screenshot" loading="lazy">
           <video class="carousel-slide" src="assets/screenshots/orbiting-ball-demo.mp4" muted loop playsinline preload="metadata"></video>
         </div>
         <button class="carousel-btn prev" type="button" aria-label="Previous screenshot">‹</button>
@@ -639,10 +693,15 @@
         <div class="carousel-dots"></div>
       </div>
       <p class="project-desc">
-        An interactive generative visuals project — a ball driven by
-        real-time parameters in a node-based environment, built to explore
-        motion, feedback, and interactivity outside of traditional code.
+        Created a real-time interactive visualization using TouchDesigner
+        to explore motion, animation, parameter control, and node-based
+        programming.
       </p>
+      <ul class="project-highlights">
+        <li>Built animated motion using LFOs</li>
+        <li>Used nodes to control object movement</li>
+        <li>Explored real-time visual programming outside traditional code</li>
+      </ul>
       <div class="stack-row">
         <span class="stack-label">stack</span>
         <span class="stack-tag">TouchDesigner</span>
@@ -651,29 +710,31 @@
 
     <div class="project">
       <div class="project-top">
-        <span class="project-name">Gradebook System</span>
+        <span class="project-name">Student Gradebook System</span>
         <div class="project-links">
           <a href="https://github.com/mhall78/java-gradebook-system" target="_blank" rel="noopener">Code</a>
         </div>
       </div>
       <div class="carousel" data-carousel>
         <div class="carousel-track">
-          <img class="carousel-slide" src="assets/screenshots/gradebook-1.png" alt="Gradebook System screenshot 1" loading="lazy">
-          <img class="carousel-slide" src="assets/screenshots/gradebook-2.png" alt="Gradebook System screenshot 2" loading="lazy">
-          <img class="carousel-slide" src="assets/screenshots/gradebook-3.png" alt="Gradebook System screenshot 3" loading="lazy">
+          <img class="carousel-slide" src="assets/screenshots/gradebook-1.png" alt="Student Gradebook System screenshot 1" loading="lazy">
+          <img class="carousel-slide" src="assets/screenshots/gradebook-2.png" alt="Student Gradebook System screenshot 2" loading="lazy">
+          <img class="carousel-slide" src="assets/screenshots/gradebook-3.png" alt="Student Gradebook System screenshot 3" loading="lazy">
         </div>
         <button class="carousel-btn prev" type="button" aria-label="Previous screenshot">‹</button>
         <button class="carousel-btn next" type="button" aria-label="Next screenshot">›</button>
         <div class="carousel-dots"></div>
       </div>
       <p class="project-desc">
-        A gradebook application for managing student records — adding and
-        updating grades, organizing them by student, and calculating
-        averages automatically.
+        Application for managing student records and grades, including
+        grade updates, organization by student, and automatic average
+        calculations.
       </p>
       <div class="stack-row">
         <span class="stack-label">stack</span>
         <span class="stack-tag">Java</span>
+        <span class="stack-tag">Object-Oriented Programming</span>
+        <span class="stack-tag">Data Management</span>
       </div>
     </div>
 
@@ -696,20 +757,29 @@
         </ul>
       </div>
       <div>
-        <div class="skill-group-title">tools</div>
+        <div class="skill-group-title">development</div>
         <ul class="skill-list">
           <li>Git</li>
+          <li>GitHub</li>
           <li>VS Code</li>
-          <li>EV3 Robotics</li>
+          <li>Flask</li>
+          <li>MySQL</li>
+        </ul>
+      </div>
+      <div>
+        <div class="skill-group-title">technologies</div>
+        <ul class="skill-list">
           <li>TouchDesigner</li>
+          <li>EV3 Robotics</li>
         </ul>
       </div>
       <div>
         <div class="skill-group-title">concepts</div>
         <ul class="skill-list">
+          <li>Object-Oriented Programming</li>
           <li>Data Structures</li>
           <li>Algorithms</li>
-          <li>Object-Oriented Programming</li>
+          <li>Database Design</li>
         </ul>
       </div>
     </div>
@@ -723,11 +793,16 @@
       <h2 class="sec-title">Experience</h2>
     </div>
     <div class="timeline">
-      <div class="tl-item">
+      <div class="tl-item is-featured">
         <div class="tl-date">August 2025 — Present</div>
         <div class="tl-role">Help Desk Technician</div>
         <div class="tl-org">Winston-Salem State University</div>
-        <div class="tl-desc">Resetting passwords and account access, troubleshooting computer and software issues, and resolving tech support tickets and emails for students and staff.</div>
+        <ul class="project-highlights">
+          <li>Troubleshoot computer and software issues for students and staff</li>
+          <li>Assist users with password resets and account access</li>
+          <li>Resolve technical support requests through tickets and email</li>
+          <li>Communicate technical solutions to users with different levels of technical experience</li>
+        </ul>
       </div>
       <div class="tl-item">
         <div class="tl-date">June 2024 — Present</div>
@@ -788,10 +863,30 @@
   </div>
 </section>
 
+<section id="looking-for">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-index">06</span>
+      <h2 class="sec-title">What I'm Looking For</h2>
+    </div>
+    <p class="looking-for-desc">
+      I'm seeking entry-level opportunities where I can apply my Computer
+      Science background while continuing to grow as a software developer
+      and IT professional.
+    </p>
+    <div class="looking-for-tags">
+      <span class="looking-for-tag">Software Development</span>
+      <span class="looking-for-tag">IT / Help Desk</span>
+      <span class="looking-for-tag">Application Development</span>
+      <span class="looking-for-tag">AI / Emerging Technology</span>
+    </div>
+  </div>
+</section>
+
 <footer id="contact">
   <div class="wrap">
-    <h2 class="footer-title">Let's talk.</h2>
-    <p class="footer-desc">Open to software engineering roles and internship opportunities — especially in app development and AI-driven products. Reach out any time.</p>
+    <h2 class="footer-title">Let's build something.</h2>
+    <p class="footer-desc">I'm a Computer Science senior graduating in December 2026 and I'm currently looking for entry-level opportunities in software development, IT, and application development.</p>
     <div class="contact-row">
       <a href="mailto:mhall222@rams.wssu.edu">mhall222@rams.wssu.edu</a>
       <a href="https://github.com/mhall78" target="_blank" rel="noopener">github.com/mhall78</a>
