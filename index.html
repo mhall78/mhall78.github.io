@@ -273,6 +273,77 @@
     font-style: italic;
   }
 
+  /* ---------- project screenshot carousel ---------- */
+  .carousel{
+    position: relative;
+    margin-bottom: 20px;
+    border: 1px solid var(--line);
+    background: var(--bg-alt);
+    overflow: hidden;
+  }
+  .carousel-track{
+    display: flex;
+    transition: transform 0.4s ease;
+  }
+  .carousel-slide{
+    flex: 0 0 100%;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    background: var(--bg-alt);
+  }
+  video.carousel-slide{
+    outline: none;
+  }
+  .carousel-btn{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15,23,32,0.72);
+    border: 1px solid var(--line-bright);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .carousel-btn:hover{ background: rgba(15,23,32,0.92); border-color: var(--accent); }
+  .carousel-btn.prev{ left: 10px; }
+  .carousel-btn.next{ right: 10px; }
+  .carousel-dots{
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .carousel-dot{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(237,241,245,0.35);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .carousel-dot.is-active{
+    background: var(--accent-warm);
+    transform: scale(1.2);
+  }
+  @media (hover: hover) and (pointer: fine){
+    .carousel-btn, .carousel-dot{ cursor: none; }
+  }
+
   /* ---------- skills ---------- */
   .skill-groups{
     display: grid;
@@ -525,6 +596,16 @@
           <a href="https://github.com/mhall78/cat-shelter-app" target="_blank" rel="noopener">Code</a>
         </div>
       </div>
+      <div class="carousel" data-carousel>
+        <div class="carousel-track">
+          <img class="carousel-slide" src="assets/screenshots/cat-shelter-1.png" alt="Cat Shelter App screenshot 1" loading="lazy">
+          <img class="carousel-slide" src="assets/screenshots/cat-shelter-2.png" alt="Cat Shelter App screenshot 2" loading="lazy">
+          <video class="carousel-slide" src="assets/screenshots/cat-shelter-demo.mp4" muted loop playsinline preload="metadata"></video>
+        </div>
+        <button class="carousel-btn prev" type="button" aria-label="Previous screenshot">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next screenshot">›</button>
+        <div class="carousel-dots"></div>
+      </div>
       <p class="project-desc">
         A full-stack cat adoption web application — browsing available cats,
         managing listings, and persisting data through a relational database
@@ -546,6 +627,16 @@
           <a href="https://www.youtube.com/watch?v=wnNzaCTED8Y&t=56s" target="_blank" rel="noopener">Demo</a>
         </div>
       </div>
+      <div class="carousel" data-carousel>
+        <div class="carousel-track">
+          <img class="carousel-slide" src="assets/screenshots/orbiting-ball-1.png" alt="Orbiting Ball screenshot 1" loading="lazy">
+          <img class="carousel-slide" src="assets/screenshots/orbiting-ball-2.png" alt="Orbiting Ball screenshot 2" loading="lazy">
+          <video class="carousel-slide" src="assets/screenshots/orbiting-ball-demo.mp4" muted loop playsinline preload="metadata"></video>
+        </div>
+        <button class="carousel-btn prev" type="button" aria-label="Previous screenshot">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next screenshot">›</button>
+        <div class="carousel-dots"></div>
+      </div>
       <p class="project-desc">
         An interactive generative visuals project — a ball driven by
         real-time parameters in a node-based environment, built to explore
@@ -559,21 +650,30 @@
 
     <div class="project">
       <div class="project-top">
-        <span class="project-name">Number Guessing Game</span>
+        <span class="project-name">Gradebook System</span>
         <div class="project-links">
-          <a href="https://github.com/mhall78/python-number-guessing-game" target="_blank" rel="noopener">Code</a>
+          <a href="https://github.com/mhall78/java-gradebook-system" target="_blank" rel="noopener">Code</a>
         </div>
       </div>
+      <div class="carousel" data-carousel>
+        <div class="carousel-track">
+          <img class="carousel-slide" src="assets/screenshots/gradebook-1.png" alt="Gradebook System screenshot 1" loading="lazy">
+          <img class="carousel-slide" src="assets/screenshots/gradebook-2.png" alt="Gradebook System screenshot 2" loading="lazy">
+          <img class="carousel-slide" src="assets/screenshots/gradebook-3.png" alt="Gradebook System screenshot 3" loading="lazy">
+        </div>
+        <button class="carousel-btn prev" type="button" aria-label="Previous screenshot">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="Next screenshot">›</button>
+        <div class="carousel-dots"></div>
+      </div>
       <p class="project-desc">
-        A command-line game that generates a random number and prompts the
-        player to guess it — an early project in control flow and
-        input handling.
+        A gradebook application for managing student records — adding and
+        updating grades, organizing them by student, and calculating
+        averages automatically.
       </p>
       <div class="stack-row">
         <span class="stack-label">stack</span>
-        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Java</span>
       </div>
-      <p class="project-note">Early-stage project, kept here to show progression.</p>
     </div>
 
   </div>
@@ -779,6 +879,80 @@
         ring.classList.add('is-active');
         glow.classList.add('is-active');
       }, { passive: true });
+    });
+  })();
+</script>
+
+<script>
+  (function(){
+    document.querySelectorAll('[data-carousel]').forEach(function(root){
+      const track = root.querySelector('.carousel-track');
+      const slides = Array.from(root.querySelectorAll('.carousel-slide'));
+      const prevBtn = root.querySelector('.carousel-btn.prev');
+      const nextBtn = root.querySelector('.carousel-btn.next');
+      const dotsWrap = root.querySelector('.carousel-dots');
+      let index = 0;
+
+      // Hide any slide whose image fails to load (e.g. placeholder not added yet)
+      slides.forEach(function(img, i){
+        img.addEventListener('error', function(){
+          img.remove();
+          rebuild();
+        });
+      });
+
+      function rebuild(){
+        const live = Array.from(root.querySelectorAll('.carousel-slide'));
+        if (live.length === 0){ root.style.display = 'none'; return; }
+        if (live.length === 1){ prevBtn.style.display = 'none'; nextBtn.style.display = 'none'; }
+        dotsWrap.innerHTML = '';
+        live.forEach(function(_, i){
+          const dot = document.createElement('button');
+          dot.className = 'carousel-dot' + (i === 0 ? ' is-active' : '');
+          dot.type = 'button';
+          dot.setAttribute('aria-label', 'Go to screenshot ' + (i + 1));
+          dot.addEventListener('click', function(){ goTo(i); });
+          dotsWrap.appendChild(dot);
+        });
+        index = 0;
+        update();
+      }
+
+      function update(){
+        track.style.transform = 'translateX(-' + (index * 100) + '%)';
+        dotsWrap.querySelectorAll('.carousel-dot').forEach(function(d, i){
+          d.classList.toggle('is-active', i === index);
+        });
+        Array.from(root.querySelectorAll('.carousel-slide')).forEach(function(el, i){
+          if (el.tagName === 'VIDEO'){
+            if (i === index){
+              el.currentTime = 0;
+              el.play().catch(function(){});
+            } else {
+              el.pause();
+            }
+          }
+        });
+      }
+
+      function goTo(i){
+        const live = root.querySelectorAll('.carousel-slide').length;
+        index = (i + live) % live;
+        update();
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', function(){ goTo(index - 1); });
+      if (nextBtn) nextBtn.addEventListener('click', function(){ goTo(index + 1); });
+
+      // touch swipe
+      let startX = 0;
+      root.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; }, { passive: true });
+      root.addEventListener('touchend', function(e){
+        const dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 40) goTo(index + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+
+      rebuild();
     });
   })();
 </script>
